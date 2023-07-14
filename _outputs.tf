@@ -74,16 +74,8 @@ output "alb_listener_https_arn" {
   value = aws_lb_listener.ecs_https.*.arn
 }
 
-output "alb_listener_test_traffic_arn" {
-  value = aws_lb_listener.ecs_test_https.*.arn
-}
-
 output "alb_internal_listener_https_arn" {
   value = aws_lb_listener.ecs_https_internal.*.arn
-}
-
-output "alb_internal_listener_test_traffic_arn" {
-  value = aws_lb_listener.ecs_test_https_internal.*.arn
 }
 
 output "ecs_nodes_secgrp_id" {
