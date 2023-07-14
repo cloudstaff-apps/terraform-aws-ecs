@@ -22,19 +22,6 @@ resource "aws_security_group_rule" "https_from_world_to_alb_internal" {
   cidr_blocks       = data.aws_subnet.private_subnets[*].cidr_block
 }
 
-resource "aws_security_group_rule" "https_test_listener_from_world_to_alb_internal" {
-  count = var.alb_internal ? 1 : 0
-
-  description       = "HTTPS ECS Internal ALB Test Listener"
-  type              = "ingress"
-  from_port         = 8443
-  to_port           = 8443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.alb_internal[0].id
-  cidr_blocks       = data.aws_subnet.private_subnets[*].cidr_block
-}
-
-
 resource "aws_security_group_rule" "from_alb_internal_to_ecs_nodes" {
   count = var.alb_internal ? 1 : 0
 

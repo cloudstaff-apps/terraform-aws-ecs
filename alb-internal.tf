@@ -44,22 +44,6 @@ resource "aws_lb_listener" "ecs_https_internal" {
   }
 }
 
-resource "aws_lb_listener" "ecs_test_https_internal" {
-  count = var.alb_internal ? 1 : 0
-
-  load_balancer_arn = aws_lb.ecs_internal[0].arn
-  port              = "8443"
-  protocol          = "HTTPS"
-  ssl_policy        = var.alb_internal_ssl_policy
-  certificate_arn   = var.certificate_internal_arn != "" ? var.certificate_internal_arn : var.certificate_arn
-
-  default_action {
-    type = "forward"
-    #target_group_arn = aws_lb_target_group.ecs_replacement_https[0].arn
-    target_group_arn = aws_lb_target_group.ecs_default_https_internal[0].arn
-  }
-}
-
 # Generate a random string to add it to the name of the Target Group
 resource "random_string" "alb_internal_prefix" {
   count   = var.alb_internal ? 1 : 0

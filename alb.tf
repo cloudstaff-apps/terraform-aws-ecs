@@ -65,40 +65,6 @@ resource "aws_lb_listener" "ecs_http_redirect" {
   }
 }
 
-resource "aws_lb_listener" "ecs_test_https" {
-  count = var.alb ? 1 : 0
-
-  load_balancer_arn = aws_lb.ecs[0].arn
-  port              = "8443"
-  protocol          = "HTTPS"
-  ssl_policy        = var.alb_ssl_policy
-  certificate_arn   = var.certificate_arn
-
-  default_action {
-    type = "forward"
-    #target_group_arn = aws_lb_target_group.ecs_replacement_https[0].arn
-    target_group_arn = aws_lb_target_group.ecs_default_https[0].arn
-  }
-}
-
-resource "aws_lb_listener" "ecs_test_http_redirect" {
-  count = var.alb && var.alb_http_listener ? 1 : 0
-
-  load_balancer_arn = aws_lb.ecs[0].arn
-  port              = "8080"
-  protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "8443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
 # Generate a random string to add it to the name of the Target Group
 resource "random_string" "alb_prefix" {
   length  = 4
@@ -131,6 +97,3 @@ resource "aws_lb_target_group" "ecs_default_https" {
     create_before_destroy = true
   }
 }
-
-
-
