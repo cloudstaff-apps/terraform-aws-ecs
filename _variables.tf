@@ -178,6 +178,11 @@ variable "asg_target_capacity" {
   description = "Target average capacity percentage for the ECS capacity provider to track for autoscaling."
 }
 
+variable "default_capacity_provider_strategy_enabled" {
+  default     = false
+  description = "Make the EC2 capacity provider the cluster's default strategy, so tasks started without a launch type or strategy wait for managed scaling to add an instance instead of failing with RESOURCE:MEMORY. Ignored when fargate_only is set."
+}
+
 variable "alarm_sns_topics" {
   default     = []
   description = "Alarm topics to create and alert on ECS instance metrics."
