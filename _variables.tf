@@ -409,3 +409,26 @@ variable "enable_managed_termination_protection" {
   type        = bool
   default     = false
 }
+variable "spot_allocation_strategy" {
+  description = "Spot allocation strategy for the ASG: lowest-price (uses 3 spot pools) or price-capacity-optimized."
+  type        = string
+  default     = "lowest-price"
+}
+
+variable "ecs_agent_config" {
+  description = "Extra ECS agent settings appended to /etc/ecs/ecs.config on new hosts, e.g. { ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION = \"30m\" }."
+  type        = map(string)
+  default     = {}
+}
+
+variable "enable_disk_monitoring" {
+  description = "Install the CloudWatch agent on hosts to report root-disk used_percent, and alarm on it per ASG."
+  type        = bool
+  default     = false
+}
+
+variable "alarm_disk_used_threshold" {
+  description = "Root-disk used percent that triggers the ASG disk alarm (with enable_disk_monitoring)."
+  type        = number
+  default     = 80
+}

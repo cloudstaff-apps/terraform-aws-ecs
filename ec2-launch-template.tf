@@ -5,7 +5,7 @@ data "template_file" "userdata" {
   vars = {
     tf_cluster_name = var.name
     tf_efs_id       = aws_efs_file_system.ecs[0].id
-    userdata_extra  = var.userdata
+    userdata_extra  = join("\n", compact([local.userdata_ecs_agent_config, local.userdata_disk_monitoring, var.userdata]))
   }
 }
 

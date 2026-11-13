@@ -18,7 +18,8 @@ resource "aws_autoscaling_group" "ecs" {
     }
 
     instances_distribution {
-      spot_instance_pools                      = 3
+      spot_allocation_strategy                 = var.spot_allocation_strategy
+      spot_instance_pools                      = var.spot_allocation_strategy == "lowest-price" ? 3 : null
       on_demand_base_capacity                  = var.on_demand_base_capacity
       on_demand_percentage_above_base_capacity = var.on_demand_percentage
     }
