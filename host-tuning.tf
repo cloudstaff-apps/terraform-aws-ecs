@@ -8,12 +8,13 @@ locals {
   ))
 
   # CloudWatch agent: root-disk used_percent per instance, plus an aggregate per ASG for the alarm.
+  # Every 5 minutes, matching the alarm period: one metric and about 9k PutMetricData calls a month per host.
   userdata_disk_monitoring = !var.enable_disk_monitoring ? "" : <<-EOT
     echo "### CLOUDWATCH AGENT (root disk)"
     yum install -y amazon-cloudwatch-agent
     cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWA'
     {
-      "agent": { "metrics_collection_interval": 60 },
+      "agent": { "metrics_collection_interval": 300, "force_flush_interval": 300 },
       "metrics": {
         "namespace": "CWAgent",
         "append_dimensions": { "AutoScalingGroupName": "$${aws:AutoScalingGroupName}", "InstanceId": "$${aws:InstanceId}" },
